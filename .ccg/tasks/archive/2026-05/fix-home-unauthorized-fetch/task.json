@@ -1,0 +1,12 @@
+﻿{
+    "id":  "fix-home-unauthorized-fetch",
+    "title":  "修复首页未登录时触发受保护接口请求",
+    "status":  "completed",
+    "complexity":  "S",
+    "risk":  "medium",
+    "domain":  "frontend",
+    "currentPhase":  "completed",
+    "nextAction":  "task completed, archive",
+    "createdAt":  "2026-05-22T02:13:21Z",
+    "branch":  "main"
+}

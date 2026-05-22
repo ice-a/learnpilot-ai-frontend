@@ -124,10 +124,12 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useProviderStore } from '../stores/provider'
 import { useKnowledgeStore } from '../stores/knowledge'
 import { useTutorStore } from '../stores/tutor'
+import { useAuthStore } from '../stores/auth'
 
 const providerStore = useProviderStore()
 const knowledgeStore = useKnowledgeStore()
 const tutorStore = useTutorStore()
+const authStore = useAuthStore()
 
 const lowAgeMode = ref(localStorage.getItem('ui.lowAgeMode') === '1')
 const showSystemStatus = ref(false)
@@ -209,7 +211,17 @@ const entries = computed(() => {
 })
 
 onMounted(() => {
-  void providerStore.fetchProviders()
-  void knowledgeStore.fetchKnowledge({})
+  if (!authStore.token) {
+    return
+  }
+
+  void authStore.fetchCurrentUser()
+    .then(async () => {
+      await Promise.allSettled([
+        providerStore.fetchProviders(),
+        knowledgeStore.fetchKnowledge({})
+      ])
+    })
+    .catch(() => {})
 })
 </script>

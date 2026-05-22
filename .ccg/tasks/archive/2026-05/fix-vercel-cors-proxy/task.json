@@ -1,0 +1,12 @@
+﻿{
+    "id":  "fix-vercel-cors-proxy",
+    "title":  "修复 Vercel 部署后的跨域请求失败（CORS）",
+    "status":  "completed",
+    "complexity":  "M",
+    "risk":  "medium",
+    "domain":  "frontend",
+    "currentPhase":  "completed",
+    "nextAction":  "task completed, archive",
+    "createdAt":  "2026-05-22T01:08:54Z",
+    "branch":  "main"
+}

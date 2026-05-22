@@ -18,9 +18,37 @@ interface PaginatedResponse<T> {
 }
 
 const apiBaseUrlFromEnv = String(import.meta.env.VITE_API_BASE_URL || '').trim()
+const defaultProdBaseUrl = '/api/v1'
+
+function resolveApiBaseUrl(): string {
+  if (!apiBaseUrlFromEnv) {
+    return import.meta.env.PROD ? defaultProdBaseUrl : 'http://localhost:3000/api/v1'
+  }
+
+  if (!import.meta.env.PROD || typeof window === 'undefined') {
+    return apiBaseUrlFromEnv
+  }
+
+  // In production, avoid cross-origin API base URLs to prevent browser CORS failures.
+  const isHttpUrl = /^https?:\/\//i.test(apiBaseUrlFromEnv)
+  if (!isHttpUrl) {
+    return apiBaseUrlFromEnv
+  }
+
+  try {
+    const parsedUrl = new URL(apiBaseUrlFromEnv)
+    if (parsedUrl.origin !== window.location.origin) {
+      return defaultProdBaseUrl
+    }
+  } catch {
+    return defaultProdBaseUrl
+  }
+
+  return apiBaseUrlFromEnv
+}
 
 const apiClient = axios.create({
-  baseURL: apiBaseUrlFromEnv || (import.meta.env.PROD ? '/api/v1' : 'http://localhost:3000/api/v1'),
+  baseURL: resolveApiBaseUrl(),
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json'

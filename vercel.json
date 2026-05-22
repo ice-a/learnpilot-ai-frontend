@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/v1/:path*",
+      "destination": "https://learn-api.020417.xyz/api/v1/:path*"
+    }
+  ]
+}
